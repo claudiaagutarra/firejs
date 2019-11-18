@@ -10,14 +10,14 @@ moment().format();
 var action = process.argv[2]
 var nodeArgs = process.argv;
 
-var bandsInput = "";
+var input = "";
 
 for (var i = 3; i < nodeArgs.length; i++) {
 
   if (i > 3 && i < nodeArgs.length) {
-    bandsInput = bandsInput + "+" + nodeArgs[i];
+    input = input + "+" + nodeArgs[i];
   } else {
-    bandsInput += nodeArgs[i];
+    input += nodeArgs[i];
   }
 }
 
@@ -30,10 +30,13 @@ switch (action) {
     concert();
     break;
   
+  case "movie-this":
+  movie();
+
   }
 
 function spotify() {
-spotify.search({ type: 'track', query: bandsInput }, function(err, data) {
+spotify.search({ type: 'track', query: input }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
@@ -54,9 +57,9 @@ spotify.search({ type: 'track', query: bandsInput }, function(err, data) {
 
 function concert() {
 
-  var queryURL = "https://rest.bandsintown.com/artists/" + bandsInput + "/events/" + "?app_id=test";
+  var queryURL = "https://rest.bandsintown.com/artists/" + input + "/events/" + "?app_id=test";
   console.log("------------------------------")
-  console.log("Upcoming Events for " + bandsInput)
+  console.log("Upcoming Events for " + input)
   console.log("------------------------------")
     axios.get(queryURL).then(
       function(response) {
@@ -98,5 +101,52 @@ function concert() {
         });
       
       }
-  
+
+  function movie () {
+    var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
+
+axios.get(queryUrl).then(
+  function(response) {
+    // console.log(response)
+    console.log("------------------------------")
+    console.log("Title: " + response.data.Title);
+    console.log("------------------------------")
+    console.log("Release Year: " + response.data.Year);
+    console.log("------------------------------")
+    console.log("IMDB Rating: " + response.data.imdbRating);
+    console.log("------------------------------")
+    console.log("Rotten Tomatoes Rating: " + response.data.Year);
+    console.log("------------------------------")
+    console.log("Produced in: " + response.data.Country);
+    console.log("------------------------------")
+    console.log("Language: " + response.data.Language);
+    console.log("------------------------------")
+    console.log("Plot: " + response.data.Plot);
+    console.log("------------------------------")
+    console.log("Actors: " + response.data.Actors);
+    console.log("------------------------------")
+  })
+  .catch(function(error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log("---------------Data---------------");
+      console.log(error.response.data);
+      console.log("---------------Status---------------");
+      console.log(error.response.status);
+      console.log("---------------Status---------------");
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an object that comes back with details pertaining to the error that occurred.
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error", error.message);
+    }
+    console.log(error.config);
+  });
+
+
+  }
   
