@@ -41,26 +41,29 @@ switch (action) {
 
 function spotifysong() {
   var spotify = new Spotify(keys.spotify);
+  if (input === "") {
+    input = "The Sign Ace"
+  }
   spotify.search({ type: 'track', query: input }, function (err, data) {
     if (err) {
       console.log('Error occurred: ' + err);
     }
       console.log("------------------------------")
-      console.log("Artist: " + data.tracks.items[1].artists[0].name);
+      console.log("Artist: " + data.tracks.items[0].artists[0].name);
       console.log("------------------------------")
-      console.log("Song Title: " + data.tracks.items[1].name);
+      console.log("Song Title: " + data.tracks.items[0].name);
       console.log("------------------------------")
-      console.log("Listen to the song: " + data.tracks.items[1].external_urls.spotify)
+      console.log("Listen to the song: " + data.tracks.items[0].external_urls.spotify)
       console.log("------------------------------")
-      console.log("Album: " + data.tracks.items[1].album.name);
+      console.log("Album: " + data.tracks.items[0].album.name);
      
   });
 }
 
 
 function movie() {
-  var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
 
+  var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
   axios.get(queryUrl).then(
     function (response) {
       console.log("------------------------------")
@@ -101,8 +104,10 @@ function movie() {
 }
 
 function movie() {
+  if (input === "") {
+    input = "Mr Nobody"
+  }
   var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
-
   axios.get(queryUrl).then(
     function (response) {
       console.log("------------------------------")
