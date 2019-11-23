@@ -61,47 +61,42 @@ function spotifysong() {
 }
 
 
-function movie() {
-
-  var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
-  axios.get(queryUrl).then(
-    function (response) {
-      console.log("------------------------------")
-      console.log("Title: " + response.data.Title);
-      console.log("------------------------------")
-      console.log("Release Year: " + response.data.Year);
-      console.log("------------------------------")
-      console.log("IMDB Rating: " + response.data.imdbRating);
-      console.log("------------------------------")
-      console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
-      console.log("------------------------------")
-      console.log("Produced in: " + response.data.Country);
-      console.log("------------------------------")
-      console.log("Language: " + response.data.Language);
-      console.log("------------------------------")
-      console.log("Plot: " + response.data.Plot);
-      console.log("------------------------------")
-      console.log("Actors: " + response.data.Actors);
-      console.log("------------------------------")
-    })
-    .catch(function (error) {
-      if (error.response) {
-        console.log("---------------Data---------------");
-        console.log(error.response.data);
-        console.log("---------------Status---------------");
-        console.log(error.response.status);
-        console.log("---------------Status---------------");
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log("Error", error.message);
-      }
-      console.log(error.config);
-    });
+function concert() {
+    var queryURL = "https://rest.bandsintown.com/artists/" + input + "/events/" + "?app_id=test";
+    console.log("------------------------------")
+    console.log("Upcoming Events for " + input)
+    console.log("------------------------------")
+    axios.get(queryURL).then(
+      function(response) {
+        response.data.forEach(function(data) {
+          var venueCity = data.venue.city;
+          var venueState = data.venue.region;
+          var venueCountry = data.venue.country;
+          var nameVenue = data.venue.name;
+          var date = data.datetime;
+          console.log(nameVenue)
+          console.log(venueCity + ", " + venueState + " " +venueCountry)
+          console.log(date)
+          console.log("------------------------------")
+        });
+      })
+      .catch(function(error) {
+        if (error.data) {
+          console.log("---------------Data---------------");
+          console.log("---------------Status---------------");
+          console.log("---------------Status---------------");
+          console.log(error.data.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      });
+    }
 
 
-}
+
 
 function movie() {
   if (input === "") {
